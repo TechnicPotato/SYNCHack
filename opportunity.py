@@ -41,5 +41,5 @@ class Opportunity:
     def mxsalary(self, smax):
         self.max = smax
 
-    def vacancies(self, spots):
+    def addvacancies(self, spots):
         self.vacancies = spots

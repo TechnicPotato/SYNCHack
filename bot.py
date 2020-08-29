@@ -123,7 +123,7 @@ class bot:
             elif divsoup[i].text == "Start Date":
                 output.startdate(fieldsoup[i].text)
             elif divsoup[i].text == "Number of Vacancies":
-                output.vacancies(fieldsoup[i].text)
+                output.addvacancies(fieldsoup[i].text)
             elif divsoup[i].text == "Minimum Salary":
                 output.mnsalary(fieldsoup[i].text)
             elif divsoup[i].text == "Maximum Salary":
