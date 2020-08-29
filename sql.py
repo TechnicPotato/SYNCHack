@@ -69,7 +69,7 @@ class SQLDB():
         self.opID += 1
     
     def test(self):
-        self.cur.execute("""SELECT info FROM Opportunities WHERE location = "Sydney" AND type = "Internship" ORDER BY review_score DESC""")
+        self.cur.execute("""SELECT * FROM Opportunities LIMIT 10""")
         all_rows = self.cur.fetchall()
         return all_rows
 

@@ -5,6 +5,7 @@ import selenium
 import sys
 import csv
 from opportunity import Opportunity
+from rake_nltk import Rake
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By 
@@ -132,5 +133,9 @@ class bot:
         return output
 
     def processpage(self, link:str):
-        textparse = self.driver.find_element_by_xpath("/html/body/div/div[2]/div[3]/div/div/div[2]/div/div/div/div[1]/div[2]/div/div/div[2]/div[1]/div/div")
-        print(textparse)
+        """ From a provided link extract the main core information, then run text processing on it"""
+        self.driver.get(link)
+        textparse = self.driver.find_element_by_xpath("/html/body/div/div[2]/div[3]/div/div/div[2]/div/div/div/div[1]/div[2]/div/div/div[2]/div[1]")
+        r = Rake()
+        r.extract_keywords_from_text(textparse.text)
+        print(r.get_ranked_phrases())
