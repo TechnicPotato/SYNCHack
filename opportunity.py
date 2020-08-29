@@ -17,15 +17,19 @@ class opportunity:
         self.review_score = score
         self.link = link
     
-    def dates(self, openD, closeD):
+    def openDate(self, openD):
         self.openD = openD
+
+    def closeDate(self, closeD):
         self.closeD = closeD
 
     def startdate(self, start):
         self.start = start
 
-    def salary(self, smin, smax):
+    def mnsalary(self, smin):
         self.min = smin
+    
+    def mxsalary(self, smax):
         self.max = smax
 
     def vacancies(self, spots):

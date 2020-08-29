@@ -63,7 +63,7 @@ class bot:
         # Confirmation checking
         for i in opportunities:
             rawstring = i.get_attribute('innerHTML')
-            self.cleanstring(rawstring)
+            output.append(self.cleanstring(rawstring))
         return output
     
     def next_page(self):
@@ -92,6 +92,7 @@ class bot:
             elif i.text == info:
                 info_link = self.website + i['href']
 
+        # Dealing with reviews
         rating =  soup.find("div", {"class":"rating__score"})
         review_link = None
         if rating != None:
@@ -101,8 +102,30 @@ class bot:
                 if i.text.startswith("Read reviews"):
                     link = i['href']
             review_link = self.website + link
-        
-        output = opportunity(company.text, o_type.text, info, info_link, app=app_link)
+
+        # Parsing Location
+        location = soup.find("div", {"class": "teaser__item teaser__item--location"})
+
+        # Create the class
+        output = opportunity(company.text, o_type.text, info, info_link, app=app_link, location=location)
         output.review_score(rating, review_link)
+
+        # Parsing Dates
+        divsoup = soup.findAll("div", {"class": "field-label ValueLabelstyle__ValueLabel-e36bm2-0 eyzJcA"})
+        fieldsoup = soup.findAll("div", {"class": "field-item"})
+        for i in range(len(divsoup)):
+            if divsoup[i].text == "Applications Close":
+                output.closeDate(fieldsoup[i].text)
+            elif divsoup[i].text == "Applications Open":
+                output.openDate(fieldsoup[i].text)
+            elif divsoup[i].text == "Start Date":
+                output.startdate(fieldsoup[i].text)
+            elif divsoup[i].text == "Number of Vacancies":
+                output.vacancies(fieldsoup[i].text)
+            elif divsoup[i].text == "Minimum Salary":
+                output.mnsalary(fieldsoup[i].text)
+            elif divsoup[i].text == "Maximum Salary":
+                output.mxsalary(fieldsoup[i].text)
+
         return output
 
