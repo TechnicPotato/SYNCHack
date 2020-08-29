@@ -1,4 +1,4 @@
-class opportunity:
+class Opportunity:
     """
     The opportunity class holds the information scraped from the GradAustralia website
     """
@@ -8,12 +8,21 @@ class opportunity:
         self.location = location
         self.application_link = app
         self.info = info
-        self.info_link
+        self.info_link = info_link
 
-        self.hasreview = False
+        # Non importants
+        self.review_score = None
+        self.link = None
+        self.openD = None
+        self.closeD = None
+        self.start = None
+        self.min = None
+        self.max = None
+        self.vacancies = None
+
     
-    def review_score(self, score, link):
-        self.hasreview = True
+    def review(self, score, link):
+
         self.review_score = score
         self.link = link
     

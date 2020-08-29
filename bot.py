@@ -4,7 +4,7 @@ import getpass
 import selenium
 import sys
 import csv
-import opportunity
+from opportunity import Opportunity
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By 
@@ -105,10 +105,12 @@ class bot:
 
         # Parsing Location
         location = soup.find("div", {"class": "teaser__item teaser__item--location"})
+        if location != None:
+            location=location.text
 
         # Create the class
-        output = opportunity(company.text, o_type.text, info, info_link, app=app_link, location=location)
-        output.review_score(rating, review_link)
+        output = Opportunity(company.text, o_type.text, info, info_link, app=app_link, location=location)
+        output.review(rating, review_link)
 
         # Parsing Dates
         divsoup = soup.findAll("div", {"class": "field-label ValueLabelstyle__ValueLabel-e36bm2-0 eyzJcA"})
