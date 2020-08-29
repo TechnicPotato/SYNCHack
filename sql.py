@@ -39,8 +39,8 @@ class SQLDB():
             openD TEXT,
             closeD TEXT,
             startD TEXT,
-            minsal INT,
-            maxsal INT,
+            minsal TEXT,
+            maxsal TEXT,
             vacancies INT
         )""")
         self.conn.commit()
@@ -51,14 +51,29 @@ class SQLDB():
         """ Adds an opportunity into the DB."""
         sql_cmd = """
                 INSERT INTO Opportunities
-                VALUES ({id}, {company}, {type}, {location}, {alink}, {ilink}, {info}, {rscore}, {rlink}, {opend}, {closed}, {startd}, {minsal}, {maxsal}, {vac})
+                VALUES ({id}, '{company}', '{type}', '{location}', '{alink}', '{ilink}', '{info}', {rscore}, '{rlink}', '{opend}', '{closed}', '{startd}', '{minsal}', '{maxsal}', {vac})
                 """
+
+        # Filtering to replace numerical values with NULL.
+        if (opportunity.vacancies == None):
+            opportunity.vacancies = "NULL"
+        if (opportunity.review_score == None):
+            opportunity.review_score = "NULL"
+
         sql_cmd = sql_cmd.format(id=self.opID, company=opportunity.company, type=opportunity.o_type, location=opportunity.location,alink=opportunity.application_link,ilink=opportunity.info_link,info=opportunity.info, rscore=opportunity.review_score, rlink=opportunity.link,opend=opportunity.openD, closed=opportunity.closeD,startd=opportunity.start, minsal=opportunity.min, maxsal=opportunity.max, vac=opportunity.vacancies)
+        # Add escape char.
+        sql_cmd = sql_cmd.replace(":", "\:")
+        
         self.cur.execute(sql_cmd)
         self.conn.commit()
         self.opID += 1
     
     def test(self):
-        self.cur.execute("""SELECT * FROM Opportunities""")
+        self.cur.execute("""SELECT info FROM Opportunities WHERE location = "Sydney" AND type = "Internship" ORDER BY review_score DESC""")
         all_rows = self.cur.fetchall()
         return all_rows
+
+    def drop_table(self):
+        """Used to reset the table"""
+        self.cur.execute("""DROP TABLE Opportunities""")
+        self.conn.commit()
