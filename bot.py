@@ -33,6 +33,7 @@ class bot:
             options.headless = True
 
         # Initialisation
+        self.website = website
         self.driver = webdriver.Firefox(options=options)
         self.driver.get(website)
         
@@ -83,9 +84,25 @@ class bot:
         soup = BeautifulSoup(string, "lxml")
         company, o_type = soup.find_all("p")
         info = soup.find("h2").text
+        info_link = None
         app_link = None
         for i in soup.find_all("a", href=True):
             if i.text == "Apply now":
                 app_link = i['href']
+            elif i.text == info:
+                info_link = self.website + i['href']
 
-        print(company.text, o_type.text, info, app_link)
+        rating =  soup.find("div", {"class":"rating__score"})
+        review_link = None
+        if rating != None:
+            # Safe to be able to convert this to a usable format
+            rating = rating.text
+            for i in soup.find_all("a", href=True):
+                if i.text.startswith("Read reviews"):
+                    link = i['href']
+            review_link = self.website + link
+        
+        output = opportunity(company.text, o_type.text, info, info_link, app=app_link)
+        output.review_score(rating, review_link)
+        return output
+
