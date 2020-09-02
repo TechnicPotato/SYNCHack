@@ -1,7 +1,8 @@
 # SYNCHack Writeup
 ## Product
-Product is TERNNER, an internship platform which combines a traditional job aggregation site with a simpler UI to make job searching both easier and quicker than traditional job aggregation sites.
-
+Product is TERNNER, an internship platform which combines a traditional job aggregation site with a simpler UI to make job searching both easier and quicker than traditional job aggregation sites. Here's some images of the prototype:
+![Job Searching Mechanism](/Writeup1.png)
+![Job Details](/Writeup2.png)
 ## Technical Details
 Using Python and Selenium, a web scraping bot was built to obtain job details off GradAustralia. This data was then parsed into BeautifulSoup4 for html parsing and then inserted into a SQLite3 server for use in site formatting. Using these details, the bot was additionally tasked with navigation to the main job detail page and scraping the section, which was then parsed into Rake-nltk to identify keywords for use as search parameters. 
 
